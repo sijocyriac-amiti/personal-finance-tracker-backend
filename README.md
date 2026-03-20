@@ -103,6 +103,20 @@ powershell -ExecutionPolicy Bypass -File .\run\deploy-full-stack.local.ps1
 
 This deploys the backend from this repo and the sibling frontend repo at `d:\Workspace\personal-finance-tracker-frontend`.
 
+Full-stack Podman deploy on this machine:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\run\deploy-podman.local.ps1
+```
+
+This script:
+
+- creates a local Podman machine named `personal-finance-podman` if needed
+- starts the machine when Podman is not already reachable
+- refreshes `PATH` so a newly installed compose provider is picked up
+- runs `podman compose -f .\compose.podman.yaml up --build -d`
+- prints the frontend, backend, and database endpoints after startup
+
 Frontend now lives in a separate project folder:
 
 ```bash
