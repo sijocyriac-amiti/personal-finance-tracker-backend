@@ -1,0 +1,49 @@
+services:
+  db:
+    image: docker.io/library/postgres:16-alpine
+    container_name: pft-postgres
+    environment:
+      POSTGRES_DB: personal_finance_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: NewStrongPassword123!
+    ports:
+      - "5432:5432"
+    volumes:
+      - pft-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d personal_finance_tracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: Containerfile
+    container_name: pft-backend
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/personal_finance_tracker
+      DB_USERNAME: postgres
+      DB_PASSWORD: NewStrongPassword123!
+      CORS_ALLOWED_ORIGINS: http://localhost:3000
+      JWT_SECRET: VGhpc0lzQVNlY3VyZURlZmF1bHRKd3RTZWNyZXRLZXlGb3JEZXZPbmx5MTIzNDU2
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../personal-finance-tracker-frontend
+      dockerfile: Containerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080/api
+    container_name: pft-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pft-postgres-data:

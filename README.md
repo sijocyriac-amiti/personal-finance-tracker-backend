@@ -170,3 +170,7 @@ curl -X POST http://localhost:8080/api/transactions ^
 ```bash
 mvn test
 ```
+
+## Podman
+
+For a local full-stack Podman deployment guide, see `docs/podman-deploy.md`.
