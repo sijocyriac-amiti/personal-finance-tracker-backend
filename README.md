@@ -188,3 +188,7 @@ mvn test
 ## Podman
 
 For a local full-stack Podman deployment guide, see `docs/podman-deploy.md`.
+
+## Azure
+
+For an Azure Container Apps deployment guide, see `docs/azure-container-apps.md`.
